@@ -1,0 +1,87 @@
+[gd_scene load_steps=11 format=3 uid="uid://dyy61ecjoayym"]
+
+[ext_resource type="Script" path="res://root.gd" id="1_865ph"]
+[ext_resource type="Texture2D" uid="uid://dgjsib6hj04n" path="res://textures/isotiles.png" id="1_fy3v4"]
+[ext_resource type="PackedScene" uid="uid://d187li0326ae4" path="res://Player.tscn" id="2_xkwb8"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_eeu1a"]
+seed = 5
+frequency = 0.0506
+fractal_type = 0
+fractal_lacunarity = 2.425
+fractal_gain = 0.785
+fractal_weighted_strength = 0.52
+fractal_ping_pong_strength = 1.725
+domain_warp_amplitude = 30.135
+domain_warp_frequency = 0.065
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 6.145
+domain_warp_fractal_gain = 0.68
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fxcga"]
+noise = SubResource("FastNoiseLite_eeu1a")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4e8t6"]
+seed = 5
+frequency = 0.03
+fractal_type = 0
+fractal_lacunarity = 2.25
+fractal_gain = 0.805
+fractal_weighted_strength = 0.25
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ncqpt"]
+noise = SubResource("FastNoiseLite_4e8t6")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ug8nh"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_31yd5"]
+texture = ExtResource("1_fy3v4")
+texture_region_size = Vector2i(183, 179)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(5, 45)
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:1/0 = 0
+0:1/0/texture_origin = Vector2i(5, 40)
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -32, -64, 0, 0, 32, 64, 0)
+1:0/0 = 0
+1:0/0/texture_origin = Vector2i(15, 40)
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:1/0 = 0
+1:1/0/texture_origin = Vector2i(15, 40)
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSet" id="TileSet_qy8i5"]
+tile_shape = 1
+tile_size = Vector2i(128, 64)
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_ug8nh")
+sources/1 = SubResource("TileSetAtlasSource_31yd5")
+
+[node name="Root" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_865ph")
+temperature = SubResource("NoiseTexture2D_fxcga")
+humadity = SubResource("NoiseTexture2D_ncqpt")
+
+[node name="TileMap" type="TileMap" parent="."]
+y_sort_enabled = true
+tile_set = SubResource("TileSet_qy8i5")
+format = 2
+layer_0/name = "ground"
+layer_0/modulate = Color(0.662745, 0.662745, 0.662745, 1)
+layer_0/y_sort_enabled = true
+layer_1/name = "on_ground"
+layer_1/enabled = true
+layer_1/modulate = Color(1, 1, 1, 1)
+layer_1/y_sort_enabled = true
+layer_1/y_sort_origin = 0
+layer_1/z_index = 1
+layer_1/tile_data = PackedInt32Array()
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_xkwb8")]
+position = Vector2(918, 611)
